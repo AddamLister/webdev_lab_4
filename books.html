@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lab 4b - Question 2 (JSON & jQuery)</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <h2>Book Collection Output</h2>
+    <div id="output"></div>
+
+    <script>
+      $(document).ready(function () {
+        // Load and parse books.json using jQuery
+        $.getJSON("books.json", function (data) {
+          const books = data.books;
+
+          // (a) Title of the first book
+          const firstBookTitle = books[0].title;
+          console.log("(a) Title of the first book:", firstBookTitle);
+
+          // (b) Author of the second book
+          const secondBookAuthor = books[1].author;
+          console.log("(b) Author of the second book:", secondBookAuthor);
+
+          // (c) Genres of all books
+          let allGenres = [];
+          $.each(books, function (index, book) {
+            console.log(
+              `(c) Genres of "${book.title}":`,
+              book.genres.join(", "),
+            );
+            allGenres.push(`${book.title}: ${book.genres.join(", ")}`);
+          });
+
+          // Dynamically update the HTML page as well
+          $("#output").html(`
+                    <p><strong>(a) Title of the first book:</strong> ${firstBookTitle}</p>
+                    <p><strong>(b) Author of the second book:</strong> ${secondBookAuthor}</p>
+                    <p><strong>(c) Genres of all books:</strong><br>${allGenres.join("<br>")}</p>
+                `);
+        }).fail(function () {
+          console.error(
+            "Error loading books.json. Make sure you are running via a local server (e.g., Live Server).",
+          );
+        });
+      });
+    </script>
+  </body>
+</html>
